@@ -1,0 +1,217 @@
+{
+  "node": "Program",
+  "functions": [
+    {
+      "node": "Function",
+      "name": "ctl",
+      "params": [
+        {
+          "node": "Param",
+          "name": "x",
+          "type": "int",
+          "pos": "1:14"
+        }
+      ],
+      "returns": [
+        {
+          "node": "Param",
+          "name": "",
+          "type": "bool",
+          "pos": "1:30"
+        }
+      ],
+      "uses": [],
+      "requires": [],
+      "ensures": [],
+      "body": {
+        "node": "Block",
+        "stmts": [
+          {
+            "node": "VarDecl",
+            "type": "bool",
+            "name": "r",
+            "init": {
+              "node": "BoolLit",
+              "value": false,
+              "pos": "2:14"
+            },
+            "pos": "2:5"
+          },
+          {
+            "node": "If",
+            "cond": {
+              "node": "Binary",
+              "op": ">",
+              "left": {
+                "node": "Var",
+                "name": "x",
+                "pos": "3:9"
+              },
+              "right": {
+                "node": "IntLit",
+                "value": 0,
+                "pos": "3:13"
+              },
+              "pos": "3:11"
+            },
+            "then": {
+              "node": "If",
+              "cond": {
+                "node": "Binary",
+                "op": ">",
+                "left": {
+                  "node": "Var",
+                  "name": "x",
+                  "pos": "4:13"
+                },
+                "right": {
+                  "node": "IntLit",
+                  "value": 10,
+                  "pos": "4:17"
+                },
+                "pos": "4:15"
+              },
+              "then": {
+                "node": "Assign",
+                "target": "r",
+                "value": {
+                  "node": "BoolLit",
+                  "value": true,
+                  "pos": "4:25"
+                },
+                "sugar": false,
+                "pos": "4:21"
+              },
+              "else_": {
+                "node": "Assign",
+                "target": "r",
+                "value": {
+                  "node": "BoolLit",
+                  "value": false,
+                  "pos": "4:40"
+                },
+                "sugar": false,
+                "pos": "4:36"
+              },
+              "pos": "4:9"
+            },
+            "else_": null,
+            "pos": "3:5"
+          },
+          {
+            "node": "Block",
+            "stmts": [
+              {
+                "node": "Assert",
+                "expr": {
+                  "node": "Binary",
+                  "op": "or",
+                  "left": {
+                    "node": "Unary",
+                    "op": "not",
+                    "operand": {
+                      "node": "Var",
+                      "name": "r",
+                      "pos": "6:20"
+                    },
+                    "pos": "6:16"
+                  },
+                  "right": {
+                    "node": "Binary",
+                    "op": ">",
+                    "left": {
+                      "node": "Var",
+                      "name": "x",
+                      "pos": "6:25"
+                    },
+                    "right": {
+                      "node": "IntLit",
+                      "value": 10,
+                      "pos": "6:29"
+                    },
+                    "pos": "6:27"
+                  },
+                  "pos": "6:22"
+                },
+                "pos": "6:9"
+              },
+              {
+                "node": "Assume",
+                "expr": {
+                  "node": "Binary",
+                  "op": "!=",
+                  "left": {
+                    "node": "Binary",
+                    "op": "*",
+                    "left": {
+                      "node": "Binary",
+                      "op": "+",
+                      "left": {
+                        "node": "Var",
+                        "name": "x",
+                        "pos": "7:17"
+                      },
+                      "right": {
+                        "node": "IntLit",
+                        "value": 1,
+                        "pos": "7:21"
+                      },
+                      "pos": "7:19"
+                    },
+                    "right": {
+                      "node": "IntLit",
+                      "value": 2,
+                      "pos": "7:26"
+                    },
+                    "pos": "7:24"
+                  },
+                  "right": {
+                    "node": "IntLit",
+                    "value": 0,
+                    "pos": "7:31"
+                  },
+                  "pos": "7:28"
+                },
+                "pos": "7:9"
+              }
+            ],
+            "pos": "5:5"
+          },
+          {
+            "node": "CallStmt",
+            "call": {
+              "node": "Call",
+              "name": "helper",
+              "args": [
+                {
+                  "node": "Var",
+                  "name": "x",
+                  "pos": "9:12"
+                },
+                {
+                  "node": "Var",
+                  "name": "r",
+                  "pos": "9:15"
+                }
+              ],
+              "pos": "9:5"
+            },
+            "pos": "9:5"
+          },
+          {
+            "node": "Return",
+            "value": {
+              "node": "Var",
+              "name": "r",
+              "pos": "10:12"
+            },
+            "pos": "10:5"
+          }
+        ],
+        "pos": "1:35"
+      },
+      "pos": "1:1"
+    }
+  ],
+  "pos": "1:1"
+}

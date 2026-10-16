@@ -1,7 +1,15 @@
 """
-Определения токенов языка Funny и сборка итогового лексера
+Определения токенов языка Funny и сборка итогового лексера:
+
+    regex -> NFA (Thompson) -> DFA (subset construction) -> min-DFA (Hopcroft)
+
+Порядок в TOKEN_DEFS одновременно задаёт приоритет разрешения конфликтов
+максимального совпадения (maximal munch): при равной длине совпадения
+побеждает токен, определённый раньше. Поэтому ключевые слова стоят перед
+IDENT (иначе "if", "while" и т.п. лексер бы принимал за идентификаторы).
 """
 
+from bisect import bisect_right
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
@@ -19,6 +27,18 @@ TOKEN_DEFS: List[Tuple[str, str, bool]] = [
     ("KW_ASSUME", "assume", False),
     ("KW_INVARIANT", "invariant", False),
     ("KW_LENGTH", "length", False),
+    # --- добавлено в HW2 ---
+    ("KW_USES", "uses", False),
+    ("KW_REQUIRES", "requires", False),
+    ("KW_ENSURES", "ensures", False),
+    ("KW_RETURN", "return", False),
+    ("KW_TRUE", "true", False),
+    ("KW_FALSE", "false", False),
+    ("KW_NOT", "not", False),
+    ("KW_AND", "and", False),
+    ("KW_OR", "or", False),
+    ("KW_INT", "int", False),
+    ("KW_BOOL", "bool", False),
 
     ("IDENT", "[A-Za-z_][A-Za-z_0-9]*", False),
     ("INT", "0|[1-9][0-9]*", False),
@@ -34,6 +54,7 @@ TOKEN_DEFS: List[Tuple[str, str, bool]] = [
     ("RBRACE", "}", False),
     ("COMMA", ",", False),
     ("SEMI", ";", False),
+    ("COLON", ":", False),
 
     ("EQEQ", "==", False),
     ("NEQ", "!=", False),
@@ -56,13 +77,17 @@ SKIP_TOKENS = {name for name, _pat, skip in TOKEN_DEFS if skip}
 class Token:
     name: str
     value: str
-    pos: int
+    pos: int          # смещение от начала текста (0-based)
+    line: int = 1     # номер строки (1-based)
+    col: int = 1      # номер столбца (1-based)
 
 
 @dataclass
 class LexError:
     pos: int
     char: str
+    line: int = 1
+    col: int = 1
 
 
 @dataclass
@@ -73,6 +98,12 @@ class CombinedLexer:
     def scan(self, text: str) -> Tuple[List[Token], List[LexError]]:
         tokens: List[Token] = []
         errors: List[LexError] = []
+        line_starts = [0] + [k + 1 for k, ch in enumerate(text) if ch == "\n"]
+
+        def line_col(p: int) -> Tuple[int, int]:
+            ln = bisect_right(line_starts, p)
+            return ln, p - line_starts[ln - 1] + 1
+
         i = 0
         n = len(text)
         trans = self.dfa.trans
@@ -99,14 +130,16 @@ class CombinedLexer:
                     last_accept = (j, accept[state])
 
             if last_accept is None:
-                errors.append(LexError(pos=i, char=text[i]))
+                ln, cl = line_col(i)
+                errors.append(LexError(pos=i, char=text[i], line=ln, col=cl))
                 i += 1
                 continue
 
             end, name = last_accept
             lexeme = text[i:end]
             if name not in SKIP_TOKENS:
-                tokens.append(Token(name=name, value=lexeme, pos=i))
+                ln, cl = line_col(i)
+                tokens.append(Token(name=name, value=lexeme, pos=i, line=ln, col=cl))
             i = end
 
         return tokens, errors

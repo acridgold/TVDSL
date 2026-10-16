@@ -1,0 +1,175 @@
+{
+  "node": "Program",
+  "functions": [
+    {
+      "node": "Function",
+      "name": "max",
+      "params": [
+        {
+          "node": "Param",
+          "name": "a",
+          "type": "int",
+          "pos": "1:14"
+        },
+        {
+          "node": "Param",
+          "name": "b",
+          "type": "int",
+          "pos": "1:22"
+        }
+      ],
+      "returns": [
+        {
+          "node": "Param",
+          "name": "m",
+          "type": "int",
+          "pos": "1:39"
+        }
+      ],
+      "uses": [],
+      "requires": [
+        {
+          "node": "BoolLit",
+          "value": true,
+          "pos": "2:10"
+        }
+      ],
+      "ensures": [
+        {
+          "node": "Binary",
+          "op": "and",
+          "left": {
+            "node": "Binary",
+            "op": ">=",
+            "left": {
+              "node": "Var",
+              "name": "m",
+              "pos": "3:9"
+            },
+            "right": {
+              "node": "Var",
+              "name": "a",
+              "pos": "3:14"
+            },
+            "pos": "3:11"
+          },
+          "right": {
+            "node": "Binary",
+            "op": ">=",
+            "left": {
+              "node": "Var",
+              "name": "m",
+              "pos": "3:20"
+            },
+            "right": {
+              "node": "Var",
+              "name": "b",
+              "pos": "3:25"
+            },
+            "pos": "3:22"
+          },
+          "pos": "3:16"
+        },
+        {
+          "node": "Binary",
+          "op": "or",
+          "left": {
+            "node": "Binary",
+            "op": "==",
+            "left": {
+              "node": "Var",
+              "name": "m",
+              "pos": "4:9"
+            },
+            "right": {
+              "node": "Var",
+              "name": "a",
+              "pos": "4:14"
+            },
+            "pos": "4:11"
+          },
+          "right": {
+            "node": "Binary",
+            "op": "==",
+            "left": {
+              "node": "Var",
+              "name": "m",
+              "pos": "4:19"
+            },
+            "right": {
+              "node": "Var",
+              "name": "b",
+              "pos": "4:24"
+            },
+            "pos": "4:21"
+          },
+          "pos": "4:16"
+        }
+      ],
+      "body": {
+        "node": "Block",
+        "stmts": [
+          {
+            "node": "If",
+            "cond": {
+              "node": "Binary",
+              "op": ">",
+              "left": {
+                "node": "Var",
+                "name": "a",
+                "pos": "6:9"
+              },
+              "right": {
+                "node": "Var",
+                "name": "b",
+                "pos": "6:13"
+              },
+              "pos": "6:11"
+            },
+            "then": {
+              "node": "Assign",
+              "target": "m",
+              "value": {
+                "node": "Var",
+                "name": "a",
+                "pos": "6:20"
+              },
+              "sugar": false,
+              "pos": "6:16"
+            },
+            "else_": {
+              "node": "Assign",
+              "target": "m",
+              "value": {
+                "node": "Var",
+                "name": "b",
+                "pos": "6:32"
+              },
+              "sugar": false,
+              "pos": "6:28"
+            },
+            "pos": "6:5"
+          }
+        ],
+        "pos": "5:1"
+      },
+      "pos": "1:1"
+    },
+    {
+      "node": "Function",
+      "name": "noop",
+      "params": [],
+      "returns": [],
+      "uses": [],
+      "requires": [],
+      "ensures": [],
+      "body": {
+        "node": "Block",
+        "stmts": [],
+        "pos": "9:17"
+      },
+      "pos": "9:1"
+    }
+  ],
+  "pos": "1:1"
+}

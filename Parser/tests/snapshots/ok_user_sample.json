@@ -1,0 +1,195 @@
+{
+  "node": "Program",
+  "functions": [
+    {
+      "node": "Function",
+      "name": "fib",
+      "params": [
+        {
+          "node": "Param",
+          "name": "n",
+          "type": null,
+          "pos": "1:14"
+        }
+      ],
+      "returns": [
+        {
+          "node": "Param",
+          "name": "",
+          "type": "int",
+          "pos": "1:25"
+        }
+      ],
+      "uses": [],
+      "requires": [],
+      "ensures": [],
+      "body": {
+        "node": "Block",
+        "stmts": [
+          {
+            "node": "Assume",
+            "expr": {
+              "node": "Binary",
+              "op": ">=",
+              "left": {
+                "node": "Var",
+                "name": "n",
+                "pos": "2:12"
+              },
+              "right": {
+                "node": "IntLit",
+                "value": 0,
+                "pos": "2:17"
+              },
+              "pos": "2:14"
+            },
+            "pos": "2:5"
+          },
+          {
+            "node": "Assign",
+            "target": "x",
+            "value": {
+              "node": "IntLit",
+              "value": 0,
+              "pos": "3:9"
+            },
+            "sugar": false,
+            "pos": "3:5"
+          },
+          {
+            "node": "Assign",
+            "target": "y",
+            "value": {
+              "node": "IntLit",
+              "value": 1,
+              "pos": "4:9"
+            },
+            "sugar": false,
+            "pos": "4:5"
+          },
+          {
+            "node": "While",
+            "cond": {
+              "node": "Binary",
+              "op": "!=",
+              "left": {
+                "node": "Var",
+                "name": "n",
+                "pos": "5:12"
+              },
+              "right": {
+                "node": "IntLit",
+                "value": 0,
+                "pos": "5:17"
+              },
+              "pos": "5:14"
+            },
+            "invariants": [],
+            "body": {
+              "node": "Block",
+              "stmts": [
+                {
+                  "node": "Assign",
+                  "target": "z",
+                  "value": {
+                    "node": "Binary",
+                    "op": "+",
+                    "left": {
+                      "node": "Var",
+                      "name": "x",
+                      "pos": "6:13"
+                    },
+                    "right": {
+                      "node": "Var",
+                      "name": "y",
+                      "pos": "6:17"
+                    },
+                    "pos": "6:15"
+                  },
+                  "sugar": false,
+                  "pos": "6:9"
+                },
+                {
+                  "node": "Assign",
+                  "target": "x",
+                  "value": {
+                    "node": "Var",
+                    "name": "y",
+                    "pos": "7:13"
+                  },
+                  "sugar": false,
+                  "pos": "7:9"
+                },
+                {
+                  "node": "Assign",
+                  "target": "y",
+                  "value": {
+                    "node": "Var",
+                    "name": "z",
+                    "pos": "8:13"
+                  },
+                  "sugar": false,
+                  "pos": "8:9"
+                },
+                {
+                  "node": "Assign",
+                  "target": "n",
+                  "value": {
+                    "node": "Binary",
+                    "op": "-",
+                    "left": {
+                      "node": "Var",
+                      "name": "n",
+                      "pos": "9:13"
+                    },
+                    "right": {
+                      "node": "IntLit",
+                      "value": 1,
+                      "pos": "9:17"
+                    },
+                    "pos": "9:15"
+                  },
+                  "sugar": false,
+                  "pos": "9:9"
+                }
+              ],
+              "pos": "5:20"
+            },
+            "pos": "5:5"
+          },
+          {
+            "node": "Assert",
+            "expr": {
+              "node": "Binary",
+              "op": ">=",
+              "left": {
+                "node": "Var",
+                "name": "x",
+                "pos": "11:12"
+              },
+              "right": {
+                "node": "IntLit",
+                "value": 0,
+                "pos": "11:17"
+              },
+              "pos": "11:14"
+            },
+            "pos": "11:5"
+          },
+          {
+            "node": "Return",
+            "value": {
+              "node": "Var",
+              "name": "x",
+              "pos": "12:12"
+            },
+            "pos": "12:5"
+          }
+        ],
+        "pos": "1:29"
+      },
+      "pos": "1:1"
+    }
+  ],
+  "pos": "1:1"
+}

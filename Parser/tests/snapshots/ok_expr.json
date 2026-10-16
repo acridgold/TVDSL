@@ -1,0 +1,294 @@
+{
+  "node": "Program",
+  "functions": [
+    {
+      "node": "Function",
+      "name": "expr",
+      "params": [
+        {
+          "node": "Param",
+          "name": "a",
+          "type": "int[]",
+          "pos": "1:15"
+        },
+        {
+          "node": "Param",
+          "name": "b",
+          "type": "bool",
+          "pos": "1:25"
+        }
+      ],
+      "returns": [
+        {
+          "node": "Param",
+          "name": "",
+          "type": "bool",
+          "pos": "1:42"
+        }
+      ],
+      "uses": [],
+      "requires": [],
+      "ensures": [],
+      "body": {
+        "node": "Block",
+        "stmts": [
+          {
+            "node": "Assign",
+            "target": "x",
+            "value": {
+              "node": "Binary",
+              "op": "-",
+              "left": {
+                "node": "Binary",
+                "op": "-",
+                "left": {
+                  "node": "Binary",
+                  "op": "+",
+                  "left": {
+                    "node": "IntLit",
+                    "value": 1,
+                    "pos": "2:9"
+                  },
+                  "right": {
+                    "node": "Binary",
+                    "op": "*",
+                    "left": {
+                      "node": "IntLit",
+                      "value": 2,
+                      "pos": "2:13"
+                    },
+                    "right": {
+                      "node": "IntLit",
+                      "value": 3,
+                      "pos": "2:17"
+                    },
+                    "pos": "2:15"
+                  },
+                  "pos": "2:11"
+                },
+                "right": {
+                  "node": "Binary",
+                  "op": "/",
+                  "left": {
+                    "node": "IntLit",
+                    "value": 4,
+                    "pos": "2:21"
+                  },
+                  "right": {
+                    "node": "IntLit",
+                    "value": 2,
+                    "pos": "2:25"
+                  },
+                  "pos": "2:23"
+                },
+                "pos": "2:19"
+              },
+              "right": {
+                "node": "IntLit",
+                "value": 1,
+                "pos": "2:29"
+              },
+              "pos": "2:27"
+            },
+            "sugar": false,
+            "pos": "2:5"
+          },
+          {
+            "node": "Assign",
+            "target": "y",
+            "value": {
+              "node": "Binary",
+              "op": "*",
+              "left": {
+                "node": "Unary",
+                "op": "-",
+                "operand": {
+                  "node": "Var",
+                  "name": "x",
+                  "pos": "3:10"
+                },
+                "pos": "3:9"
+              },
+              "right": {
+                "node": "Unary",
+                "op": "-",
+                "operand": {
+                  "node": "Binary",
+                  "op": "+",
+                  "left": {
+                    "node": "IntLit",
+                    "value": 2,
+                    "pos": "3:16"
+                  },
+                  "right": {
+                    "node": "IntLit",
+                    "value": 3,
+                    "pos": "3:20"
+                  },
+                  "pos": "3:18"
+                },
+                "pos": "3:14"
+              },
+              "pos": "3:12"
+            },
+            "sugar": false,
+            "pos": "3:5"
+          },
+          {
+            "node": "Assign",
+            "target": "z",
+            "value": {
+              "node": "Binary",
+              "op": "+",
+              "left": {
+                "node": "Index",
+                "array": {
+                  "node": "Var",
+                  "name": "a",
+                  "pos": "4:9"
+                },
+                "index": {
+                  "node": "IntLit",
+                  "value": 0,
+                  "pos": "4:11"
+                },
+                "pos": "4:10"
+              },
+              "right": {
+                "node": "Binary",
+                "op": "*",
+                "left": {
+                  "node": "Index",
+                  "array": {
+                    "node": "Var",
+                    "name": "a",
+                    "pos": "4:16"
+                  },
+                  "index": {
+                    "node": "Index",
+                    "array": {
+                      "node": "Var",
+                      "name": "a",
+                      "pos": "4:18"
+                    },
+                    "index": {
+                      "node": "IntLit",
+                      "value": 1,
+                      "pos": "4:20"
+                    },
+                    "pos": "4:19"
+                  },
+                  "pos": "4:17"
+                },
+                "right": {
+                  "node": "Call",
+                  "name": "length",
+                  "args": [
+                    {
+                      "node": "Var",
+                      "name": "a",
+                      "pos": "4:33"
+                    }
+                  ],
+                  "pos": "4:26"
+                },
+                "pos": "4:24"
+              },
+              "pos": "4:14"
+            },
+            "sugar": false,
+            "pos": "4:5"
+          },
+          {
+            "node": "Assign",
+            "target": "b",
+            "value": {
+              "node": "Binary",
+              "op": "or",
+              "left": {
+                "node": "Binary",
+                "op": "and",
+                "left": {
+                  "node": "Unary",
+                  "op": "not",
+                  "operand": {
+                    "node": "Var",
+                    "name": "b",
+                    "pos": "5:13"
+                  },
+                  "pos": "5:9"
+                },
+                "right": {
+                  "node": "Binary",
+                  "op": "<",
+                  "left": {
+                    "node": "Var",
+                    "name": "x",
+                    "pos": "5:19"
+                  },
+                  "right": {
+                    "node": "Var",
+                    "name": "y",
+                    "pos": "5:23"
+                  },
+                  "pos": "5:21"
+                },
+                "pos": "5:15"
+              },
+              "right": {
+                "node": "Binary",
+                "op": "and",
+                "left": {
+                  "node": "Binary",
+                  "op": ">=",
+                  "left": {
+                    "node": "Var",
+                    "name": "x",
+                    "pos": "5:28"
+                  },
+                  "right": {
+                    "node": "Var",
+                    "name": "z",
+                    "pos": "5:33"
+                  },
+                  "pos": "5:30"
+                },
+                "right": {
+                  "node": "BoolLit",
+                  "value": true,
+                  "pos": "5:39"
+                },
+                "pos": "5:35"
+              },
+              "pos": "5:25"
+            },
+            "sugar": false,
+            "pos": "5:5"
+          },
+          {
+            "node": "Return",
+            "value": {
+              "node": "Binary",
+              "op": "==",
+              "left": {
+                "node": "Var",
+                "name": "b",
+                "pos": "6:12"
+              },
+              "right": {
+                "node": "BoolLit",
+                "value": false,
+                "pos": "6:17"
+              },
+              "pos": "6:14"
+            },
+            "pos": "6:5"
+          }
+        ],
+        "pos": "1:47"
+      },
+      "pos": "1:1"
+    }
+  ],
+  "pos": "1:1"
+}

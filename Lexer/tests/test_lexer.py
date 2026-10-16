@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import pytest
 
-from lexer import build_lexer, build_single_dfa, TOKEN_DEFS, full_match, classify_first
+from Lexer.lexer import build_lexer, build_single_dfa, TOKEN_DEFS, full_match, classify_first
 
 PATTERNS = {name: pat for name, pat, _skip in TOKEN_DEFS}
 
@@ -278,13 +278,12 @@ def test_full_program(lexer):
     expected_head = [
         ("KW_FUNCTION", "function"), ("IDENT", "fib"), ("LPAREN", "("),
         ("IDENT", "n"), ("RPAREN", ")"), ("KW_RETURNS", "returns"),
-        ("IDENT", "int"), ("LBRACE", "{"),
+        ("KW_INT", "int"), ("LBRACE", "{"),
         ("KW_ASSUME", "assume"), ("IDENT", "n"), ("GE", ">="), ("INT", "0"), ("SEMI", ";"),
     ]
     assert pairs(tokens)[: len(expected_head)] == expected_head
-    # "return" -- не объявлено ключевым словом в спецификации задания,
-    # поэтому лексер обязан распознать его как обычный IDENT.
-    assert ("IDENT", "return") in pairs(tokens)
+    # HW2: "return" и "int" стали ключевыми словами
+    assert ("KW_RETURN", "return") in pairs(tokens)
     assert ("KW_ASSERT", "assert") in pairs(tokens)
 
 
@@ -396,6 +395,8 @@ CHAR_CLASS_ORDER_PROBES = [
 
 @pytest.fixture(scope="module")
 def ident_dfa_reordered():
+    # тот же язык, что и IDENT, но порядок внутри второго класса другой:
+    # "A-Za-z0-9_" вместо "A-Za-z_0-9"
     return build_single_dfa("[A-Za-z_][A-Za-z0-9_]*")
 
 
@@ -405,23 +406,64 @@ def test_char_class_element_order_does_not_change_language(ident_dfa, ident_dfa_
 
 
 def test_char_class_element_order_does_not_change_dfa_size(ident_dfa, ident_dfa_reordered):
+    # раз языки идентичны, минимизированные ДКА должны быть изоморфны —
+    # в частности, иметь одинаковое число состояний и один и тот же алфавит.
     assert len(ident_dfa.states) == len(ident_dfa_reordered.states)
     assert ident_dfa.alphabet == ident_dfa_reordered.alphabet
 
 
 # ---------------------------------------------------------------------
+# 13. INT: "0|[1-9][0-9]*" vs "0|[1-9][0-9]*|00*" — лишняя альтернатива
+#     00* меняет язык (разрешает многонулевые числа "00", "000", ...),
+#     хотя выглядит как безобидное расширение. Тест фиксирует ГДЕ именно
+#     расходятся два автомата, а не просто "они разные".
+# ---------------------------------------------------------------------
 
 @pytest.fixture(scope="module")
 def int_dfa_with_multi_zero_alt():
+    # намеренно "испорченный" вариант INT: альтернатива 00* добавляет
+    # любую непустую строку из одних нулей в язык.
     return build_single_dfa("0|[1-9][0-9]*|00*")
 
 
 @pytest.mark.parametrize("s", ["00", "000", "0000", "00000"])
 def test_extra_00_star_alt_now_accepts_multi_zero_strings(int_dfa, int_dfa_with_multi_zero_alt, s):
+    # в оригинальном INT такие строки НЕ матчатся целиком (ведущий ноль
+    # запрещён), а в "испорченном" варианте — матчатся.
     assert full_match(int_dfa, s) is False
     assert full_match(int_dfa_with_multi_zero_alt, s) is True
 
 
 @pytest.mark.parametrize("s", ["0", "1", "9", "10", "90", "01", "007", "1x", ""])
 def test_extra_00_star_alt_does_not_change_anything_else(int_dfa, int_dfa_with_multi_zero_alt, s):
+    # на всех остальных строках (включая "01"/"007" — там после нулей
+    # идёт ненулевая цифра, а 00* матчит только сплошные нули) поведение
+    # обоих автоматов должно совпадать.
     assert full_match(int_dfa, s) == full_match(int_dfa_with_multi_zero_alt, s)
+
+
+# ---------------------------------------------------------------------
+# 14. HW2: позиции токенов (line/col) и новые токены
+# ---------------------------------------------------------------------
+
+def test_token_positions_line_col(lexer):
+    tokens, _ = lexer.scan("x = 1;\n  y\r\n\tz")
+    got = [(t.value, t.line, t.col) for t in tokens]
+    assert got == [("x", 1, 1), ("=", 1, 3), ("1", 1, 5), (";", 1, 6),
+                   ("y", 2, 3), ("z", 3, 2)]
+
+
+def test_lex_error_positions(lexer):
+    _, errors = lexer.scan("ab\n  @")
+    assert [(e.char, e.line, e.col) for e in errors] == [("@", 2, 3)]
+
+
+@pytest.mark.parametrize("word,tag", [
+    ("uses", "KW_USES"), ("requires", "KW_REQUIRES"), ("ensures", "KW_ENSURES"),
+    ("return", "KW_RETURN"), ("true", "KW_TRUE"), ("false", "KW_FALSE"),
+    ("not", "KW_NOT"), ("and", "KW_AND"), ("or", "KW_OR"),
+    ("int", "KW_INT"), ("bool", "KW_BOOL"), (":", "COLON"),
+])
+def test_hw2_tokens(lexer, word, tag):
+    tokens, errors = lexer.scan(word)
+    assert errors == [] and pairs(tokens) == [(tag, word)]
